@@ -53,10 +53,28 @@ var renderGrid = function () {
 renderGrid();
 
 // Update the grid on click
-canvas.addEventListener("click", function (e) {
+var lastTile = null;
+var drawTile = function (e) {
   var x = Math.floor((e.x - canvasRect.x) / cellSize);
   var y = Math.floor((e.y - canvasRect.y) / cellSize);
+  if (lastTile && lastTile.x == x && lastTile.y == y) { return; }
   grid[y][x] = grid[y][x] == 0 ? 1 : 0;
 
   renderGrid();
+  lastTile = {
+    x: x,
+    y: y
+  };
+};
+
+canvas.addEventListener("mousedown", drawTile);
+canvas.addEventListener("mousemove", function (e) {
+  console.log("mousemove");
+  if (lastTile) {
+    drawTile(e);
+  }
+});
+
+canvas.addEventListener("mouseup", function (e) {
+  lastTile = null;
 });
