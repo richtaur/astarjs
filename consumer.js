@@ -69,7 +69,6 @@ var drawTile = function (e) {
 
 canvas.addEventListener("mousedown", drawTile);
 canvas.addEventListener("mousemove", function (e) {
-  console.log("mousemove");
   if (lastTile) {
     drawTile(e);
   }
