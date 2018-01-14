@@ -23,10 +23,8 @@ var Map = function (grid, walkable) {
 
 Map.prototype.isWalkable = function (x, y) {
 	if (
-		x < 0
-		|| y < 0
-		|| x >= this.width
-		|| y >= this.height
+		x < 0 || y < 0 ||
+		x >= this.width || y >= this.height
 	) {
 		// Outside the map. Totally NOT walkable!
 		return false;
@@ -36,7 +34,7 @@ Map.prototype.isWalkable = function (x, y) {
 
 Map.prototype.makeNode = function (x, y, parent) {
 	return new Node(
-		(x + (y * this.width)),
+		x + (y * this.width),
 		x, y, parent
 	);
 };
@@ -76,14 +74,12 @@ var findPath = function (grid, startX, startY, goalX, goalY, walkable) {
 
 	var len = 0;
 	while (len = openList.length) {
-
 		var minF = {
 			index: -1,
 			f: Infinity
 		};
 
-		// Find the node on the open list
-		// with the lowest F
+		// Find the node on the open list with the lowest F
 		for (var i = 0; i < len; ++i) {
 			if (openList[i].f < minF.f) {
 				minF.f = openList[i].f;
@@ -94,10 +90,8 @@ var findPath = function (grid, startX, startY, goalX, goalY, walkable) {
 		// Remove this node from the open list
 		var node = openList.splice(minF.index, 1)[0];
 
+    // Did we find the goal node?
 		if (node.index === goal.index) {
-
-			// Hooray! We found the goal node!
-
 			// Create the final path
 			var path = [];
 			do {
@@ -108,12 +102,8 @@ var findPath = function (grid, startX, startY, goalX, goalY, walkable) {
 			path.reverse();
 
 			return path;
-
 		} else {
-
 			// Haven't found the goal node yet...
-
-			// Get adjacent nodes
 			var adjacent = map.getAdjacent(node);
 
 			// Calculate values for adjacent nodes
@@ -122,15 +112,13 @@ var findPath = function (grid, startX, startY, goalX, goalY, walkable) {
 			for (var i = 0, j = adjacent.length; i < j; ++i) {
 				var n = adjacent[i];
 				if (!closedList[n.index]) {
-					n.g = (node.g + n.getDistance(node));
-					n.f = (n.g + n.getDistance(goal));
+					n.g = node.g + n.getDistance(node);
+					n.f = n.g + n.getDistance(goal);
 					openList.push(n);
 					closedList[n.index] = true;
 				}
 			}
-
 		}
-
 	}
 
 	// We didn't find a path to the goal :(
