@@ -8,10 +8,7 @@ var Node = function (index, x, y, parent) {
 };
 
 Node.prototype.getDistance = function (node) {
-	return (
-		Math.abs(this.x - node.x)
-		+ Math.abs(this.y - node.y)
-	);
+	return (Math.abs(this.x - node.x) + Math.abs(this.y - node.y));
 };
 
 var Map = function (grid, walkable) {
@@ -65,22 +62,22 @@ var findPath = function (grid, startX, startY, goalX, goalY, walkable) {
 	var map = new Map(grid, walkable);
 
 	// The start and goal nodes
-	var start = map.makeNode(startX, startY);
-	var goal = map.makeNode(goalX, goalY);
+	var startNode = map.makeNode(startX, startY);
+	var goalNode = map.makeNode(goalX, goalY);
 
 	// List to keep track of open and closed nodes
-	var openList = [start];
+	var openList = [startNode];
 	var closedList = [];
 
-	var len = 0;
-	while (len = openList.length) {
+	var length = 0;
+	while (length = openList.length) {
 		var minF = {
 			index: -1,
 			f: Infinity
 		};
 
 		// Find the node on the open list with the lowest F
-		for (var i = 0; i < len; ++i) {
+		for (var i = 0; i < length; ++i) {
 			if (openList[i].f < minF.f) {
 				minF.f = openList[i].f;
 				minF.index = i;
@@ -88,15 +85,15 @@ var findPath = function (grid, startX, startY, goalX, goalY, walkable) {
 		}
 
 		// Remove this node from the open list
-		var node = openList.splice(minF.index, 1)[0];
+		var currentNode = openList.splice(minF.index, 1)[0];
 
     // Did we find the goal node?
-		if (node.index === goal.index) {
+		if (currentNode.index === goalNode.index) {
 			// Create the final path
 			var path = [];
 			do {
-				path.push([node.x, node.y]);
-			} while (node = node.parent);
+				path.push([currentNode.x, currentNode.y]);
+			} while (currentNode = currentNode.parent);
 
 			// ...and flip it so it's in the right order
 			path.reverse();
@@ -104,18 +101,17 @@ var findPath = function (grid, startX, startY, goalX, goalY, walkable) {
 			return path;
 		} else {
 			// Haven't found the goal node yet...
-			var adjacent = map.getAdjacent(node);
+			var adjacentList = map.getAdjacent(currentNode);
 
-			// Calculate values for adjacent nodes
-			// and add them to the open list if
+			// Calculate values for adjacent nodes and add them to the open list if
 			// they aren't already closed
-			for (var i = 0, j = adjacent.length; i < j; ++i) {
-				var n = adjacent[i];
-				if (!closedList[n.index]) {
-					n.g = node.g + n.getDistance(node);
-					n.f = n.g + n.getDistance(goal);
-					openList.push(n);
-					closedList[n.index] = true;
+			for (var i = 0, j = adjacentList.length; i < j; ++i) {
+				var node = adjacentList[i];
+				if (!closedList[node.index]) {
+					node.g = currentNode.g + node.getDistance(currentNode);
+					node.f = node.g + node.getDistance(goalNode);
+					openList.push(node);
+					closedList[node.index] = true;
 				}
 			}
 		}
