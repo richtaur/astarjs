@@ -26,7 +26,7 @@ Map.prototype.isWalkable = function (x, y) {
 		// Outside the map. Totally NOT walkable!
 		return false;
 	}
-  return this.walkable.indexOf(this.grid[y][x]) > -1;
+	return this.walkable.indexOf(this.grid[y][x]) > -1;
 };
 
 Map.prototype.makeNode = function (x, y, parent) {
@@ -87,7 +87,7 @@ var findPath = function (grid, startX, startY, goalX, goalY, walkable) {
 		// Remove this node from the open list
 		var currentNode = openList.splice(minF.index, 1)[0];
 
-    // Did we find the goal node?
+		// Did we find the goal node?
 		if (currentNode.index === goalNode.index) {
 			// Create the final path
 			var path = [];
@@ -106,12 +106,12 @@ var findPath = function (grid, startX, startY, goalX, goalY, walkable) {
 			// Calculate values for adjacent nodes and add them to the open list if
 			// they aren't already closed
 			for (var i = 0, j = adjacentList.length; i < j; ++i) {
-				var node = adjacentList[i];
-				if (!closedList[node.index]) {
-					node.g = currentNode.g + node.getDistance(currentNode);
-					node.f = node.g + node.getDistance(goalNode);
-					openList.push(node);
-					closedList[node.index] = true;
+				var adjacentNode = adjacentList[i];
+				if (!closedList[adjacentNode.index]) {
+					adjacentNode.g = currentNode.g + adjacentNode.getDistance(currentNode);
+					adjacentNode.f = adjacentNode.g + adjacentNode.getDistance(goalNode);
+					openList.push(adjacentNode);
+					closedList[adjacentNode.index] = true;
 				}
 			}
 		}
