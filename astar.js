@@ -57,7 +57,7 @@ Map.prototype.getAdjacent = function (n) {
 	return a;
 };
 
-var findPath = function (grid, startX, startY, goalX, goalY, walkable) {
+function findPath (grid, startX, startY, goalX, goalY, walkable) {
 	// The search area
 	var map = new Map(grid, walkable);
 
@@ -119,4 +119,4 @@ var findPath = function (grid, startX, startY, goalX, goalY, walkable) {
 
 	// We didn't find a path to the goal :(
 	return null;
-};
+}
